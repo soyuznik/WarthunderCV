@@ -1,3 +1,3 @@
 ﻿  WT.cpp
-C:\Users\user\Documents\GitHub\WT\WT.cpp(12,13): warning C4326: return type of 'main' should be 'int' instead of 'void'
+C:\Users\user\Documents\GitHub\WT\WT.cpp(15,13): warning C4326: return type of 'main' should be 'int' instead of 'void'
   WT.vcxproj -> C:\Users\user\Documents\GitHub\WT\x64\Debug\WT.exe

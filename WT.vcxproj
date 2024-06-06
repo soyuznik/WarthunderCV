@@ -71,11 +71,11 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>D:\OpenCV\opencv\build\include;$(IncludePath)</IncludePath>
+    <IncludePath>D:\OpenCV\opencv\build\include;$(ProjectDir);$(IncludePath)</IncludePath>
     <LibraryPath>D:\OpenCV\opencv\build\x64\vc16\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>D:\OpenCV\opencv\build\include;$(IncludePath)</IncludePath>
+    <IncludePath>D:\OpenCV\opencv\build\include;$(ProjectDir);$(IncludePath)</IncludePath>
     <LibraryPath>D:\OpenCV\opencv\build\x64\vc16\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -138,6 +138,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="WT.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="capture.h" />
+    <ClInclude Include="util.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

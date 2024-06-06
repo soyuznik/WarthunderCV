@@ -1,0 +1,8 @@
+﻿  WT.cpp
+C:\Users\user\Documents\GitHub\WT\WT.cpp(15,13): warning C4326: return type of 'main' should be 'int' instead of 'void'
+  Generating code
+  1 of 153 functions ( 0.7%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    1 functions had inline decision re-evaluated but remain unchanged
+  Finished generating code
+  WT.vcxproj -> C:\Users\user\Documents\GitHub\WT\x64\Release\WT.exe
