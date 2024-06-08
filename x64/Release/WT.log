@@ -1,8 +1,21 @@
 ﻿  WT.cpp
-C:\Users\user\Documents\GitHub\WT\WT.cpp(15,13): warning C4326: return type of 'main' should be 'int' instead of 'void'
+C:\Users\user\Documents\GitHub\WT\WT.cpp(59,34): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\Users\user\Documents\GitHub\WT\WT.cpp(60,32): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\Users\user\Documents\GitHub\WT\WT.cpp(61,39): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\Users\user\Documents\GitHub\WT\WT.cpp(84,80): warning C4244: 'argument': conversion from 'const float' to '_Tp', possible loss of data
+          with
+          [
+              _Tp=int
+          ]
+C:\Users\user\Documents\GitHub\WT\WT.cpp(84,67): warning C4244: 'argument': conversion from 'const float' to '_Tp', possible loss of data
+          with
+          [
+              _Tp=int
+          ]
+C:\Users\user\Documents\GitHub\WT\WT.cpp(107,73): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
   Generating code
-  1 of 153 functions ( 0.7%) were compiled, the rest were copied from previous compilation.
+  6 of 542 functions ( 1.1%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    1 functions had inline decision re-evaluated but remain unchanged
+    3 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   WT.vcxproj -> C:\Users\user\Documents\GitHub\WT\x64\Release\WT.exe

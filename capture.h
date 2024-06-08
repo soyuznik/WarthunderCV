@@ -71,7 +71,7 @@ void screenshot_window_base(HWND handle , LPCWSTR output) {
     //========================================
     // =============================================
     //  Capture 1024x 768 windowed 
-    //  Time 42.247 seconds , Release mode x64 , overwrite files.
+    //  Time 24.75 seconds , Release mode x64 , create new files
     //========================================
 
 
