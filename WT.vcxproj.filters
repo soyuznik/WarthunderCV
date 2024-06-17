@@ -18,6 +18,9 @@
     <ClCompile Include="WT.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="yolo.cpp">
+      <Filter>Header Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="capture.h">
@@ -27,6 +30,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ImageProcessor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="yolo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

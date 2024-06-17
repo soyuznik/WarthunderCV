@@ -101,8 +101,7 @@ class ImageProcessor:
 
         blob = cv.dnn.blobFromImage(img, 1/255.0, (416, 416), swapRB=True, crop=False)
         self.net.setInput(blob)
-        outputs = self.net.forward(self.ln)
-        outputs = np.vstack(outputs)
+        outputs = self.net.forward()
         coordinates = self.get_coordinates(outputs, 0.1)
 
         self.draw_identified_objects(img, coordinates)
@@ -114,7 +113,6 @@ class ImageProcessor:
         boxes = []
         confidences = []
         classIDs = []
-        print(outputs)
         for output in outputs:
             #exit
             scores = output[5:]
@@ -158,23 +156,21 @@ class ImageProcessor:
 
 # Run this cell to initiate detections using the trained model.
 
-window_name = "npm"
+window_name = "War Thunder"
 cfg_file_name = "./Models/yolov4_train.cfg"
-weights_file_name = "./Models/yolov4_train_last.weights"
+weights_file_name = "./Models/yolov4_train_final.weights"
 
 wincap = WindowCapture(window_name)
 improc = ImageProcessor(wincap.get_window_size(), cfg_file_name, weights_file_name)
 
 while(True):
-    
     ss = wincap.get_screenshot()
     
     if cv.waitKey(1) == ord('q'):
         cv.destroyAllWindows()
         break
-
     coordinates = improc.proccess_image(ss)
-    
+    sleep(2)
     #for coordinate in coordinates:
      #   print(coordinate)
     #print()

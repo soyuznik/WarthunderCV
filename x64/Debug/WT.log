@@ -1,16 +1,31 @@
-﻿  WT.cpp
-C:\Users\user\Documents\GitHub\WT\WT.cpp(47,34): warning C4305: 'initializing': truncation from 'double' to 'float'
-C:\Users\user\Documents\GitHub\WT\WT.cpp(48,32): warning C4305: 'initializing': truncation from 'double' to 'float'
-C:\Users\user\Documents\GitHub\WT\WT.cpp(49,39): warning C4305: 'initializing': truncation from 'double' to 'float'
-C:\Users\user\Documents\GitHub\WT\WT.cpp(86,80): warning C4244: 'argument': conversion from 'const float' to '_Tp', possible loss of data
+﻿  yolo.cpp
+C:\Users\user\Documents\GitHub\WT\yolo.h(50,22): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\Users\user\Documents\GitHub\WT\yolo.cpp(123,60): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\user\Documents\GitHub\WT\yolo.cpp(130,13): warning C4244: 'initializing': conversion from '_Tp' to 'float', possible loss of data
           with
           [
-              _Tp=int
+              _Tp=double
           ]
-C:\Users\user\Documents\GitHub\WT\WT.cpp(86,67): warning C4244: 'argument': conversion from 'const float' to '_Tp', possible loss of data
+C:\Users\user\Documents\GitHub\WT\yolo.cpp(131,13): warning C4244: 'initializing': conversion from '_Tp' to 'float', possible loss of data
           with
           [
-              _Tp=int
+              _Tp=double
           ]
-C:\Users\user\Documents\GitHub\WT\WT.cpp(109,73): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\user\Documents\GitHub\WT\yolo.cpp(132,13): warning C4244: 'initializing': conversion from '_Tp' to 'float', possible loss of data
+          with
+          [
+              _Tp=double
+          ]
+C:\Users\user\Documents\GitHub\WT\yolo.cpp(133,13): warning C4244: 'initializing': conversion from '_Tp' to 'float', possible loss of data
+          with
+          [
+              _Tp=double
+          ]
+C:\Users\user\Documents\GitHub\WT\yolo.cpp(134,14): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\user\Documents\GitHub\WT\yolo.cpp(135,13): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\user\Documents\GitHub\WT\yolo.cpp(137,27): warning C4244: 'argument': conversion from 'double' to '_Ty', possible loss of data
+          with
+          [
+              _Ty=float
+          ]
   WT.vcxproj -> C:\Users\user\Documents\GitHub\WT\x64\Debug\WT.exe

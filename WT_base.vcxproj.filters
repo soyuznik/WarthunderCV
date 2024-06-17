@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Zuma">
+      <UniqueIdentifier>{36ddd3a3-f530-4a7e-ab7f-774e10ec5a29}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MoveDetect">
+      <UniqueIdentifier>{5ff92cfd-8941-4bc8-add2-b872afbc247a}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="WT_base.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Ball.cpp">
+      <Filter>Zuma</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ZumaOpenCV.h">
+      <Filter>Zuma</Filter>
+    </ClCompile>
+    <ClCompile Include="MoveDetect\src-lib\MoveDetect.cpp">
+      <Filter>MoveDetect</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\Ball.h">
+      <Filter>Zuma</Filter>
+    </ClInclude>
+    <ClInclude Include="src\color.h">
+      <Filter>Zuma</Filter>
+    </ClInclude>
+    <ClInclude Include="Z_Utils.h">
+      <Filter>Zuma</Filter>
+    </ClInclude>
+    <ClInclude Include="MoveDetect\src-lib\MoveDetect.hpp">
+      <Filter>MoveDetect</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
