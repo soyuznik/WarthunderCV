@@ -91,7 +91,15 @@ cv::Mat WindowsGraphicsCapture(HWND hwndTarget)
 
 
     session.IsCursorCaptureEnabled(false);
-    session.StartCapture();
+    //session.IsBorderRequired(false);
+    try {
+        session.StartCapture();
+    }
+    catch (...) {
+        std::cout << "[ERROR] session.StartCapture() - window is hidden or closed";
+        exit(1);
+    }
+    
 
 
     // Message pump
