@@ -7,19 +7,68 @@
 #include <opencv2/dnn.hpp>
 #include <opencv2/videoio.hpp>
 #include <opencv2/imgproc.hpp>
-#include <Z_Utils.h>
+#include <windows.h>
+#include <win10capture.h>
+
+//#include <RealisticMouse/RealisticMouse/RunMouse.h>
 using namespace cv;
 using namespace std;
 using namespace dnn;
 #define lol long long
 #define ld double
 #define CONF 0.1
+
+void MouseMove(int x, int y)
+{
+    double fScreenWidth = ::GetSystemMetrics(SM_CXSCREEN) - 1;
+    double fScreenHeight = ::GetSystemMetrics(SM_CYSCREEN) - 1;
+    double fx = x * (65535.0f / fScreenWidth);
+    double fy = y * (65535.0f / fScreenHeight);
+    INPUT Input = { 0 };
+    Input.type = INPUT_MOUSE;
+    Input.mi.dwFlags = MOUSEEVENTF_MOVE ;
+    Input.mi.dx = fx;
+    Input.mi.dy = fy;
+    ::SendInput(1, &Input, sizeof(INPUT));
+}
 int main()
 {
-    LPCWSTR window_title = L"War Thunder - Test Drive";
+
+
+    //RunMouse* Mouse = new RunMouse();
+    //cout << "You Can press\n";
+    //while (true) {
+     //   POINT p;
+        //0x20 == spacebar
+     //   if (GetAsyncKeyState(0x20)) {
+     //       GetCursorPos(&p);
+            //cout << "Cursor pos : " << p.x << " " << p.y << "\n";
+      //      MouseMove(0, 1);
+            //GetCursorPos(&p);
+            //cout << "Cursor pos : " << p.x << " " << p.y << "\n";
+     //   }
+
+        //500ms delay between click
+     //   Sleep(500);
+   // }
+
+
+
+   // while (true) {
+        // pause;
+   // }
+    LPCWSTR window_title = L"War Thunder";
     HWND handle = FindWindow(NULL, window_title);
-    std::string model = "./Models/yolov4_train_best.weights";  
-    std::string config = "./Models/yolov4_train.cfg";
+
+    //Mat img = WindowsGraphicsCapture(handle);
+    //cvtColor(img, img, COLOR_RGBA2RGB);
+   // imshow("img", img);
+    //cv::waitKey(0);
+   // while (true) {
+
+  //  }
+    std::string model = "./Models/yolov4_train_best1.weights";  
+    std::string config = "./Models/yolov4_train1.cfg";
 
     Net network = readNet(model, config , "Darknet");
     network.setPreferableBackend(DNN_BACKEND_OPENCV);
@@ -54,8 +103,9 @@ int main()
         //    cout << "Video Capture Fail" << endl;
        //     break;
        // }
-        Mat img = hwnd2mat(handle);
+        Mat img = WindowsGraphicsCapture(handle);
         cvtColor(img, img, COLOR_RGBA2RGB);
+        
         static Mat blobFromImg;
         bool swapRB = true;
         blobFromImage(img, blobFromImg, 1/255.0, Size(416, 416), Scalar(), swapRB, false);

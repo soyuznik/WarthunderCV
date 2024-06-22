@@ -1,8 +1,8 @@
-﻿  Generating code
+﻿D:\Visual Studio\Visual Studio\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(534,5): warning MSB8028: The intermediate directory (x64\Release\) contains files shared from another project (WT_base.vcxproj).  This can lead to incorrect clean and rebuild behavior.
+  Generating code
+  Previous IPDB and IOBJ mismatch, fall back to full compilation.
+  All 134 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
   Finished generating code
-  1 of 134 functions ( 0.7%) were compiled, the rest were copied from previous compilation.
-    0 functions were new in current compilation
-    0 functions had inline decision re-evaluated but remain unchanged
   WT.vcxproj -> C:\Users\user\Documents\GitHub\WT\x64\Release\WT.exe
   'pwsh.exe' is not recognized as an internal or external command,
   operable program or batch file.

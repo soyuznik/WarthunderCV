@@ -19,6 +19,12 @@
     <Filter Include="MoveDetect">
       <UniqueIdentifier>{5ff92cfd-8941-4bc8-add2-b872afbc247a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="RunMouse">
+      <UniqueIdentifier>{2ac074d3-2ef7-4212-8d05-92f24070e688}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Capture_Win32Graphics">
+      <UniqueIdentifier>{de19c104-575a-46a0-962c-2e0fcc1c5c69}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WT_base.cpp">
@@ -33,6 +39,18 @@
     <ClCompile Include="MoveDetect\src-lib\MoveDetect.cpp">
       <Filter>MoveDetect</Filter>
     </ClCompile>
+    <ClCompile Include="RealisticMouse\RealisticMouse\BezierCurve.cpp">
+      <Filter>RunMouse</Filter>
+    </ClCompile>
+    <ClCompile Include="RealisticMouse\RealisticMouse\Normal.cpp">
+      <Filter>RunMouse</Filter>
+    </ClCompile>
+    <ClCompile Include="RealisticMouse\RealisticMouse\RunMouse.cpp">
+      <Filter>RunMouse</Filter>
+    </ClCompile>
+    <ClCompile Include="windows.graphics.capture\pch.cpp">
+      <Filter>Capture_Win32Graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Ball.h">
@@ -46,6 +64,30 @@
     </ClInclude>
     <ClInclude Include="MoveDetect\src-lib\MoveDetect.hpp">
       <Filter>MoveDetect</Filter>
+    </ClInclude>
+    <ClInclude Include="RealisticMouse\RealisticMouse\BezierCurve.h">
+      <Filter>RunMouse</Filter>
+    </ClInclude>
+    <ClInclude Include="RealisticMouse\RealisticMouse\Normal.h">
+      <Filter>RunMouse</Filter>
+    </ClInclude>
+    <ClInclude Include="RealisticMouse\RealisticMouse\RunMouse.h">
+      <Filter>RunMouse</Filter>
+    </ClInclude>
+    <ClInclude Include="win10capture.h">
+      <Filter>Capture_Win32Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="WGCopencvinterop.h">
+      <Filter>Capture_Win32Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="windows.graphics.capture\d3dHelpers.h">
+      <Filter>Capture_Win32Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="windows.graphics.capture\direct3d11.interop.h">
+      <Filter>Capture_Win32Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="windows.graphics.capture\pch.h">
+      <Filter>Capture_Win32Graphics</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

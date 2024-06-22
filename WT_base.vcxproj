@@ -23,7 +23,7 @@
     <Keyword>Win32Proj</Keyword>
     <ProjectGuid>{7a51c774-6bb5-481c-98f3-26aa9ee39acf}</ProjectGuid>
     <RootNamespace>WTbase</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.26100.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -132,14 +132,26 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="MoveDetect\src-lib\MoveDetect.cpp" />
+    <ClCompile Include="RealisticMouse\RealisticMouse\BezierCurve.cpp" />
+    <ClCompile Include="RealisticMouse\RealisticMouse\Normal.cpp" />
+    <ClCompile Include="RealisticMouse\RealisticMouse\RunMouse.cpp" />
     <ClCompile Include="src\Ball.cpp" />
     <ClCompile Include="src\ZumaOpenCV.h" />
+    <ClCompile Include="windows.graphics.capture\pch.cpp" />
     <ClCompile Include="WT_base.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="WGCopencvinterop.h" />
+    <ClInclude Include="win10capture.h" />
     <ClInclude Include="MoveDetect\src-lib\MoveDetect.hpp" />
+    <ClInclude Include="RealisticMouse\RealisticMouse\BezierCurve.h" />
+    <ClInclude Include="RealisticMouse\RealisticMouse\Normal.h" />
+    <ClInclude Include="RealisticMouse\RealisticMouse\RunMouse.h" />
     <ClInclude Include="src\Ball.h" />
     <ClInclude Include="src\color.h" />
+    <ClInclude Include="windows.graphics.capture\d3dHelpers.h" />
+    <ClInclude Include="windows.graphics.capture\direct3d11.interop.h" />
+    <ClInclude Include="windows.graphics.capture\pch.h" />
     <ClInclude Include="Z_Utils.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

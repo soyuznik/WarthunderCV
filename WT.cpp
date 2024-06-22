@@ -11,14 +11,14 @@ using namespace std;
 void main() {
 
 	
-	HWND handle = FindWindowA(NULL, "War Thunder - In Battle");
-	lol index = 100000;
+	HWND handle = FindWindowA(NULL, "War Thunder");
+	lol index = 3003000;
 	//auto start = std::chrono::high_resolution_clock::now();
 	while (true) {
 		if (GetKeyState('Z') & 0x8000/*Check if high-order bit is set (1 << 15)*/)
 		{
 			std::wostringstream woss;
-			woss << "./database_4/file" << index << ".bmp";
+			woss << "./database_6/file" << index << ".bmp";
 			screenshot_window_base(handle, woss.str().c_str());//
 			index++;
 			Sleep(1000);
