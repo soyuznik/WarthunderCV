@@ -58,8 +58,8 @@ int main()
    // while (true) {
 
   //  }
-    std::string model = "./Models/yolov4_train_best0.weights";  
-    std::string config = "./Models/yolov4_train0.cfg";
+    std::string model = "./Models/yolov4_train_best2.weights";  
+    std::string config = "./Models/yolov4_train2.cfg";
 
     Net network = readNet(model, config , "Darknet");
     network.setPreferableBackend(DNN_BACKEND_OPENCV);
@@ -87,8 +87,8 @@ int main()
     //// More expensive but slightly prettier anti-aliased lines.
     //movement_detection.line_type = cv::LINE_AA;
 
-    string scoped = "SCOPE: OFF";
-
+    string scoped = "scope: OFF";
+    int distoffset = 0;
     for (;;)
     {
         
@@ -118,7 +118,7 @@ int main()
         Mat cimg = img(Range(xoffset, img.rows - 200), Range(yoffset, img.cols - 200));
         static Mat blobFromImg;
         bool swapRB = true;
-        blobFromImage(cimg, blobFromImg, 1/255.0, Size(416, 416), Scalar(), swapRB, false);
+        blobFromImage(cimg, blobFromImg, 1/255.0, Size(704, 416), Scalar(), swapRB, false);
         network.setInput(blobFromImg);
         std::vector<Mat> voutMat;
         Mat outMat;
@@ -178,43 +178,61 @@ int main()
         //}
         std::vector<int> good;
         cv::dnn::NMSBoxes(boxes, confidences, CONF, 0 , good);
+        std::vector<pii> dxdy;
         for (auto ind : good) {
             Rect r = boxes[ind];
             int left = r.x;
             int top = r.y;
             int width = r.width;
             int height = r.height;
-            stringstream ss; ss << "tank " << trunc(confidences[ind] * 100) << "%";
-            putText(img, ss.str(), Point(left, top - 5), FONT_HERSHEY_SIMPLEX, 0.4, Scalar(0, 0, 255),1, LINE_AA);
+            stringstream ss; ss << "tank " << trunc(confidences[ind] * 100) << "% " << ind;
+            cv::putText(img, ss.str(), Point(left, top - 5), FONT_HERSHEY_SIMPLEX, 0.4, Scalar(0, 0, 255),1, LINE_AA);
             rectangle(img, Rect(left, top, width, height), Scalar(0, 0, 255), 2, 8, 0);
-            if (GetAsyncKeyState(0x4F)) {
-                double cx = left + (width / 2) + 10;
-                double cy = top + (height / 2);
-                double sens = 1;
-                double dx = cx - ((img.cols) / 2);
-                double dy = cy - ((img.rows) / 2);
-                MouseMove(dx * sens, dy * sens);
-                if (dx < 25 && dy < 25) {
-                    INPUT input = {};
-                    input.type = INPUT_MOUSE;
-                    input.mi.dwFlags = MOUSEEVENTF_LEFTDOWN;
-                    SendInput(1, &input, sizeof(INPUT));
-                }
-                //cout << "left: " << left << "  top:" << top << "\n";
-                //cout << "rows: " << img.rows / 2 << "  cols:" << img.cols / 2 << "\n";
-                //cout << "dx: " << dx * sens << "  " << "dy: " << dy * sens << "\n";
-
+            double cx = left + (width / 2);
+            double cy = top + (height / 2) - distoffset;
+            double dx = cx - ((img.cols) / 2);
+            double dy = cy - ((img.rows) / 2);
+            dxdy.push_back({ dx , dy });
+        }
+        sort(dxdy.begin(), dxdy.end(), [](pii a, pii b) {
+            return a.first*a.first + a.second*a.second < b.first*b.first + b.second*b.second;
+        });
+        bool engaged = false;
+        if (GetAsyncKeyState(0x4F)) {
+            if (dxdy.empty()) continue;
+            double dx = dxdy[0].first;
+            double dy = dxdy[0].second;
+            double sens = 1;
+            MouseMove(dx * sens, dy * sens);
+            if (dx < 10 && dy < 10) {
+                // simulate click
+                INPUT input = {};
+                engaged = true;
+                input.type = INPUT_MOUSE;
+                input.mi.dwFlags = MOUSEEVENTF_LEFTDOWN;
+                SendInput(1, &input, sizeof(INPUT));
             }
         }
         if (csum > 300) {
-            scoped = "SCOPE: OFF";
+            scoped = "scope: off";
         }
-        else scoped = "SCOPE: ON";
-        putText(img, scoped, Point(0, 40), FONT_HERSHEY_SIMPLEX, 0.7, Scalar(0, 255, 0), 1, LINE_AA);
+        else scoped = "scope: on";
+        cv::putText(img, scoped, Point(0, 40), FONT_HERSHEY_SIMPLEX, 0.5, Scalar(0, 255, 0), 1, LINE_AA);
+        if (engaged) {
+            cv::putText(img, "engaged", Point(0, 60), FONT_HERSHEY_SIMPLEX, 0.5, Scalar(0, 0, 255), 1, LINE_AA);
+            distoffset += 2;
+            stringstream ss; ss << "distoffset: " << distoffset;
+            cv::putText(img, ss.str(), Point(0, 80), FONT_HERSHEY_SIMPLEX, 0.5, Scalar(0, 0, 255), 1, LINE_AA);
+        }
+        else distoffset = 0;
         
-        namedWindow("window", WINDOW_AUTOSIZE);
+        cv::namedWindow("window", WINDOW_AUTOSIZE);
         //movement_detection.detect(img);
         cv::imshow("window", img);
+        INPUT input = {};
+        input.type = INPUT_MOUSE;
+        input.mi.dwFlags = MOUSEEVENTF_LEFTUP;
+        SendInput(1, &input, sizeof(INPUT));
         cv::waitKey(25);
         //Sleep(2000);
     }
