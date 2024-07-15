@@ -61,7 +61,7 @@ cv::Mat WindowsGraphicsCapture(HWND hwndTarget)
             reinterpret_cast<void**>(winrt::put_abi(captureItem)));
         _winrt__init = 1;
     }////
-
+    retry:
     /////////////////////////////////////////////////////////////
     m_framePool =
         winrt::Windows::Graphics::Capture::Direct3D11CaptureFramePool::Create(
@@ -72,6 +72,7 @@ cv::Mat WindowsGraphicsCapture(HWND hwndTarget)
     auto isFrameArrived = false;
     winrt::com_ptr<ID3D11Texture2D> texture;
     const auto session = m_framePool.CreateCaptureSession(captureItem);
+    bool succes = true;
     m_framePool.FrameArrived([&](auto& framePool, auto&)
         {
             if (isFrameArrived) return;
@@ -82,13 +83,18 @@ cv::Mat WindowsGraphicsCapture(HWND hwndTarget)
             {
                 virtual HRESULT __stdcall GetInterface(GUID const& id, void** object) = 0;
             };
-
-            auto access = frame.Surface().as<IDirect3DDxgiInterfaceAccess>();
-            access->GetInterface(winrt::guid_of<ID3D11Texture2D>(), texture.put_void());
+            try {
+                auto access = frame.Surface().as<IDirect3DDxgiInterfaceAccess>();
+                access->GetInterface(winrt::guid_of<ID3D11Texture2D>(), texture.put_void());
+            }
+            catch (...) {
+                std::cout << "[Exception] access->GetInterface(winrt::guid_of<ID3D11Texture2D>(), texture.put_void() <---- here ); ..retrying.\n";
+                succes = false;
+            }
             isFrameArrived = true;
             return;
         });
-
+    if (!succes) goto retry;
 
     session.IsCursorCaptureEnabled(false);
     //session.IsBorderRequired(false);

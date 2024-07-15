@@ -9,7 +9,8 @@
 #include <opencv2/imgproc.hpp>
 #include <windows.h>
 #include <win10capture.h>
-
+#include <unordered_set>
+//#include <Z_Utils.h>
 //#include <RealisticMouse/RealisticMouse/RunMouse.h>
 using namespace cv;
 using namespace std;
@@ -44,7 +45,7 @@ int main()
     
 
 
-
+    //cv::cuda::GpuMat;
    // while (true) {
         // pause;
    // }
@@ -62,38 +63,97 @@ int main()
     std::string config = "./Models/yolov4_train2.cfg";
 
     Net network = readNet(model, config , "Darknet");
-    network.setPreferableBackend(DNN_BACKEND_OPENCV);
-    network.setPreferableTarget(DNN_TARGET_OPENCL);
-    //std::vector<cv::String> ln = network.getUnconnectedOutLayersNames();
+    network.setPreferableBackend(DNN_BACKEND_CUDA);
+    network.setPreferableTarget(DNN_TARGET_CUDA);
     std::vector<cv::String> ln;
     auto layers = network.getLayerNames();
     for (auto i : network.getUnconnectedOutLayers()) {
         ln.push_back(layers[i-1]);
     }
-    //MoveDetect::Handler movement_detection;
-    //movement_detection.mask_enabled = true;
-    //movement_detection.bbox_enabled = true;
-    //movement_detection.contours_enabled = true;
-    //movement_detection.contours_size = 4;
-    //
-    //// If you are generating either the contours or the bounding boxes,
-    //// then you'll want to increase the frequency and keep more frames.
-    //movement_detection.key_frame_frequency = 1;
-    //movement_detection.number_of_control_frames = 10;
-    //
-    //// Larger "thumbnails" improves precision, but takes longer to process each frame.
-    //movement_detection.thumbnail_ratio = 0.25;
-    //
-    //// More expensive but slightly prettier anti-aliased lines.
-    //movement_detection.line_type = cv::LINE_AA;
+
+    std::string crossm = "./Models/yolov4-tiny-cross_best.weights";
+    std::string crossc = "./Models/yolov4-tiny-cross.cfg";
+    Net crossd = readNet(crossm, crossc, "Darknet");
+    crossd.setPreferableBackend(DNN_BACKEND_CUDA);
+    crossd.setPreferableTarget(DNN_TARGET_CUDA);
+    std::vector<cv::String> lnc;
+    auto crossl = crossd.getLayerNames();
+    for (auto i : crossd.getUnconnectedOutLayers()) {
+        lnc.push_back(crossl[i - 1]);
+    }
 
     string scoped = "scope: OFF";
     int distoffset = 0;
+    std::set<pair<int,int>> trace;
     for (;;)
     {
         
         Mat img = WindowsGraphicsCapture(handle);
         cvtColor(img, img, COLOR_RGBA2RGB);
+        // record map movement; // on resultion 1280 x 720 on warthunder and mat size is 1282x747
+        std::vector<cv::Rect> cross_box;
+        std::vector<float> cross_conf;
+        //int mapy = 515;
+        //int mapx = 1050;
+        {
+            Vec3b pinc = Vec3b(0, 0, 255);
+            Vec3b& px00 = img.at<Vec3b>(515, 1050);
+            Vec3b& pxE0 = img.at<Vec3b>(733, 1267);
+            Vec3b& px0E = img.at<Vec3b>(733, 1050);
+            Vec3b& pxEE = img.at<Vec3b>(515 , 1267);
+            px00 = px0E = pxEE = pxE0 = pinc;
+            Mat map = img(Range(515, 733) , Range(1050, 1257));
+            static Mat blobFromImg;
+            bool swapRB = true;
+            cv::dnn::blobFromImage(map, blobFromImg, 1 / 255.0, Size(416, 416), cv::Scalar(), swapRB, false);
+            crossd.setInput(blobFromImg);
+            std::vector<Mat> voutMat;
+            Mat outMat;
+            crossd.forward(voutMat, lnc);
+            cv::vconcat(voutMat, outMat);
+            int rowsNoOfDetection = outMat.rows;
+            int colsCoordinatesPlusClassScore = outMat.cols;
+            using pii = pair<double, double>;
+            //std::vector<pii> distm;
+            for (int j = 0; j < rowsNoOfDetection; ++j)
+            {
+                Mat scores = outMat.row(j).colRange(5, colsCoordinatesPlusClassScore);
+                Point PositionOfMax;
+                double confidence;
+                minMaxLoc(scores, 0, &confidence, 0, &PositionOfMax);
+
+                if (confidence > CONF)
+                {
+
+                    ld centerX = (outMat.at<float>(j, 0) * map.cols);
+                    ld centerY = (outMat.at<float>(j, 1) * map.rows);
+                    ld width = (outMat.at<float>(j, 2) * map.cols);
+                    ld height = (outMat.at<float>(j, 3) * map.rows);
+                    //ld left = centerX - width / 2;
+                    //ld top = centerY - height / 2;
+
+                    cv::Rect2d box_(centerX, centerY, width, height);
+                    cross_box.push_back(box_);
+                    cross_conf.push_back(confidence);
+                }
+            }
+            std::vector<int> good_cross;
+            cv::dnn::NMSBoxes(cross_box, cross_conf, CONF, 0, good_cross);
+            Rect r = cross_box[good_cross[0]];
+            int cx = r.x;
+            int cy = r.y;
+            double radius = (sqrt(2)) / 4;
+            radius *= ((r.width > r.height) ? r.width : r.height);
+            trace.insert(make_pair(cx, cy));
+            for (auto p : trace) {
+                Vec3b& px = map.at<Vec3b>(cv::Point(p.first , p.second));
+                px = Vec3b(255, 0, 0);
+            }
+            circle(map, cv::Point(cx, cy) , radius, cv::Scalar(0, 255, 0), 1);
+            cv::namedWindow("map", WINDOW_AUTOSIZE);
+            cv::imshow("map", map);
+
+        }
         // if all edged pixels are black means scoped in
         Vec3b pinc = Vec3b(0, 255, 0);
         Vec3b& px00 = img.at<Vec3b>(30, 30);
@@ -146,36 +206,15 @@ int main()
                 ld centerY = (outMat.at<float>(j, 1) * cimg.rows) + xoffset;
                 ld width = (outMat.at<float>(j, 2) * cimg.cols);
                 ld height = (outMat.at<float>(j, 3) * cimg.rows);
-                //distm.push_back({ centerX - (img.rows)/2, centerY - (img.cols) / 2 });
                 ld left = centerX - width / 2;
                 ld top = centerY - height / 2;
                 
                 cv::Rect2d box_(left, top, width, height);
                 boxes.push_back(box_);
                 confidences.push_back(confidence);
-
-               // putText(img, "tank", Point(left, top), FONT_HERSHEY_SIMPLEX, 1.4, Scalar(0, 0, 255), 2, false);
-               
-
-                //rectangle(img, Rect(left, top, width, height), Scalar(0, 0, 255), 2, 8, 0);
             }
         }
-       // if (GetAsyncKeyState(VK_SPACE)) {
-           // double sens = 0.1;
-         //   MouseMove(distm[0].first * sens, distm[0].second * sens);
-            //if (GetAsyncKeyState(VK_LEFT)) {
-            //    MouseMove(-1, 0);
-            //}
-            //if (GetAsyncKeyState(VK_UP)) {
-            //    MouseMove(0, -1);
-           // }
-            //if (GetAsyncKeyState(VK_DOWN)) {
-            //    MouseMove(0, 1);
-            //}
-            //if (GetAsyncKeyState(VK_RIGHT)) {
-            //    MouseMove(1, 0);
-            //}
-        //}
+
         std::vector<int> good;
         cv::dnn::NMSBoxes(boxes, confidences, CONF, 0 , good);
         std::vector<pii> dxdy;
@@ -220,7 +259,7 @@ int main()
         cv::putText(img, scoped, Point(0, 40), FONT_HERSHEY_SIMPLEX, 0.5, Scalar(0, 255, 0), 1, LINE_AA);
         if (engaged) {
             cv::putText(img, "engaged", Point(0, 60), FONT_HERSHEY_SIMPLEX, 0.5, Scalar(0, 0, 255), 1, LINE_AA);
-            distoffset += 2;
+            //distoffset += 2;
             stringstream ss; ss << "distoffset: " << distoffset;
             cv::putText(img, ss.str(), Point(0, 80), FONT_HERSHEY_SIMPLEX, 0.5, Scalar(0, 0, 255), 1, LINE_AA);
         }
