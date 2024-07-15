@@ -10,5 +10,6 @@ This is a simple project that uses OpenCV to detect tanks in War Thunder. It get
 3. After all these steps you can build the .sln file
 4. You will also need the models to run the project
 ## Screenshots:
- ![detection at distance]("Screenshots/screenshot1.png")           
- ![aimbot mode]("Screenshots/screenshot2.png")                           
+ ![detection at distance](https://github.com/user-attachments/assets/b4c41c4d-f9f6-4697-9994-5f027e5a7c86)
+![aimbot](https://github.com/user-attachments/assets/41a6562a-8a6a-48f5-9950-627e72833fc1)
+                           
